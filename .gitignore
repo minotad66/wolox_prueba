@@ -48,7 +48,7 @@ typings/
 *.tsbuildinfo
 
 # Optional npm cache directory
-.npm
+*.npm
 
 # Optional eslint cache
 .eslintcache
@@ -69,18 +69,20 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+*.env
+*.env.test
+docker.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
 # Next.js build output
 .next
-
+.vscode
 # Nuxt.js build / generate output
 .nuxt
 dist
+data
 
 # Gatsby files
 .cache/
@@ -102,3 +104,4 @@ dist
 
 # TernJS port file
 .tern-port
+ormconfig.json
