@@ -1,18 +1,3 @@
-/* export const errors = (error: { code: any; message: any }) => {
-  switch (error.code) {
-    case 'user-error':
-      return { status: 400, message: error.message };
-    case 'not-found':
-      return { status: 404, message: error.message };
-    case 'token-expired':
-      return { status: 401, message: error.message };
-    case 'invalid-token':
-      return { status: 403, message: error.message };
-    default:
-      return { status: 500, message: error.message };
-  }
-}; */
-
 export const NotFoundException = (error: string | undefined) => ({
   statusCode: 404,
   message: error || 'Not Found',
@@ -35,4 +20,10 @@ export const UniqueViolation = () => ({
   statusCode: 500,
   message: 'El username ya esta en uso',
   error: 'Unique violation',
+});
+
+export const UnauthorizedException = (error: string | undefined) => ({
+  statusCode: 401,
+  message: error || 'Unauthorized',
+  error: 'Unauthorized',
 });

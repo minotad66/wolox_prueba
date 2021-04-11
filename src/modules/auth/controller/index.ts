@@ -6,7 +6,7 @@ import * as services from '../service';
 export const signIn = async (req: { body: ISignIn }, res: Response, next: NextFunction) => {
   try {
     const response = await services.signIn(req.body);
-    res.status(201).json(response);
+    res.status(200).json(response);
   } catch (err) {
     next(err);
   }

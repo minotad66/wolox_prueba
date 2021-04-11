@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main",
     "start:dev": "tsc-watch --onSuccess \"node dist/index.js\"",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -23,6 +24,7 @@
   "homepage": "https://github.com/minotad66/wolox_prueba#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "coingecko-api": "^1.0.10",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -52,5 +54,22 @@
     "tsc-watch": "^4.2.9",
     "tslint": "^5.12.1",
     "typescript": "^3.8.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
   }
 }
