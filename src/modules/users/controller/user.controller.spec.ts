@@ -1,7 +1,7 @@
 import * as controllers from './index';
 import * as service from '../service';
 import * as httpMocks from 'node-mocks-http';
-import { mockedDataUser } from '../../../test/mockedData';
+import { mockedDataUser } from '../test/mockedData';
 
 jest.mock('../service');
 
@@ -52,7 +52,7 @@ describe('findOneUsers controllers', () => {
     expect(service.findOneUsers).toBeCalledWith(mockedDataUser.params);
   });
 
-  it('should return json boby response', async () => {
+  it('should return json body response', async () => {
     res = httpMocks.createResponse();
     (service.findOneUsers as jest.Mock).mockReturnValue(mockedDataUser.body);
 

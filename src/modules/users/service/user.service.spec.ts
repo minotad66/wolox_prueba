@@ -1,6 +1,6 @@
 import * as typeorm from 'typeorm';
 import * as service from '../service';
-import { mockedDataUser } from '../../../test/mockedData';
+import { mockedDataUser } from '../test/mockedData';
 
 (typeorm as any).getRepository = jest.fn();
 
@@ -9,7 +9,7 @@ describe('User services, findUsers', () => {
     expect(typeof service.findUsers).toBe('function');
   });
 
-  it('should return json boby response', async () => {
+  it('should return json body response', async () => {
     (typeorm as any).getRepository.mockReturnValue({
       find: () => Promise.resolve([mockedDataUser.body]),
     });
@@ -39,7 +39,7 @@ describe('User services, findOneUsers', () => {
     expect(typeof service.findOneUsers).toBe('function');
   });
 
-  it('should return json boby response', async () => {
+  it('should return json body response', async () => {
     (typeorm as any).getRepository.mockReturnValue({
       findOne: () => Promise.resolve(mockedDataUser.body),
     });
@@ -73,7 +73,7 @@ describe('User services, saveUsers', () => {
     expect(typeof service.saveUsers).toBe('function');
   });
 
-  it('should return json boby response', async () => {
+  it('should return json body response', async () => {
     const { body } = mockedDataUser;
     const data = { ...body, id: 0 };
     (typeorm as any).getRepository.mockReturnValue({
@@ -156,7 +156,7 @@ describe('User services, updateUsers', () => {
       const { body, params } = mockedDataUser;
       (typeorm as any).getRepository.mockReturnValue({
         update: () => Promise.resolve(),
-        findOne: () => Promise.resolve({ ...body, id: 0 }),
+        findOne: () => Promise.resolve(),
       });
       await service.updateUsers(body, params);
     } catch (err) {
