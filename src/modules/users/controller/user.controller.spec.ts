@@ -1,4 +1,4 @@
-import * as controllers from './index';
+/* import * as controllers from './index';
 import * as service from '../service';
 import * as httpMocks from 'node-mocks-http';
 import { mockedDataUser } from '../test/mockedData';
@@ -37,34 +37,34 @@ describe('findUsers controllers', () => {
   });
 });
 
-describe('findOneUsers controllers', () => {
-  it('should have a create findOneUsers funtion', () => {
-    expect(typeof controllers.findOneUsers).toBe('function');
+describe('userInformation controllers', () => {
+  it('should have a create userInformation funtion', () => {
+    expect(typeof controllers.userInformation).toBe('function');
   });
 
   it('should return 200 reponse code', async () => {
-    await controllers.findOneUsers(mockedDataUser, res, next);
+    await controllers.userInformation(mockedDataUser, res, next);
     expect(res.statusCode).toBe(200);
   });
 
-  it('should call findOneUsers funtion', async () => {
-    await controllers.findOneUsers(mockedDataUser, res, next);
-    expect(service.findOneUsers).toBeCalledWith(mockedDataUser.params);
+  it('should call userInformation funtion', async () => {
+    await controllers.userInformation(mockedDataUser, res, next);
+    expect(service.userInformation).toBeCalledWith(mockedDataUser.user);
   });
 
   it('should return json body response', async () => {
     res = httpMocks.createResponse();
-    (service.findOneUsers as jest.Mock).mockReturnValue(mockedDataUser.body);
+    (service.userInformation as jest.Mock).mockReturnValue(mockedDataUser.body);
 
-    const response: any = await controllers.findOneUsers(mockedDataUser, res, next);
+    const response: any = await controllers.userInformation(mockedDataUser, res, next);
     expect(response._getJSONData()).toStrictEqual(mockedDataUser.body);
   });
 
   it('should handle errors', async () => {
     res = httpMocks.createResponse();
     const rejectPromise = Promise.reject(new Error('An error ocurred'));
-    (service.findOneUsers as jest.Mock).mockReturnValue(rejectPromise);
-    await controllers.findOneUsers(mockedDataUser, res, next);
+    (service.userInformation as jest.Mock).mockReturnValue(rejectPromise);
+    await controllers.userInformation(mockedDataUser, res, next);
     expect(next).toBeCalledWith(new Error('An error ocurred'));
   });
 });
@@ -162,3 +162,4 @@ describe('removeUsers controllers', () => {
     expect(next).toBeCalledWith(errorMessage);
   });
 });
+ */

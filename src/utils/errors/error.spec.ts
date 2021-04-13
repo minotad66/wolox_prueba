@@ -54,11 +54,11 @@ describe('UniqueViolation', () => {
   });
 
   it('should return json body response', async () => {
-    const response = error.UniqueViolation();
+    const response = error.UniqueViolation('error');
 
     expect(response).toEqual({
       error: 'Unique violation',
-      message: 'El username ya esta en uso',
+      message: 'error',
       statusCode: 500,
     });
   });
@@ -76,6 +76,22 @@ describe('UnauthorizedException', () => {
       error: 'Unauthorized',
       message: 'error',
       statusCode: 401,
+    });
+  });
+});
+
+describe('Forbidden', () => {
+  it('should have a create Forbidden funtion', () => {
+    expect(typeof error.Forbidden).toBe('function');
+  });
+
+  it('should return json body response', async () => {
+    const response = error.Forbidden('error');
+
+    expect(response).toEqual({
+      error: 'Forbidden',
+      message: 'error',
+      statusCode: 403,
     });
   });
 });

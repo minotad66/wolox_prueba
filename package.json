@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/main",
-    "start:dev": "tsc-watch --onSuccess \"node dist/index.js\"",
+    "start:dev": "ts-node-dev src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -51,6 +51,7 @@
     "node-mocks-http": "^1.10.1",
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.4",
+    "ts-node-dev": "^1.1.6",
     "tsc-watch": "^4.2.9",
     "tslint": "^5.12.1",
     "typescript": "^3.8.2"

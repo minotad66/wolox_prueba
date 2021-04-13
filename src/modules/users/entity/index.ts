@@ -1,9 +1,9 @@
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
   BaseEntity,
+  Column,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -19,13 +19,21 @@ export class Users extends BaseEntity {
   lastName: string;
 
   @Column({ type: 'varchar', length: 128, unique: true })
-  userName: string;
+  username: string;
 
   @Column({ type: 'varchar', length: 128, select: false })
   password: string;
 
   @Column({ type: 'varchar', length: 128 })
   currency: string;
+
+  @Column({
+    type: 'jsonb',
+    array: false,
+    default: () => "'[]'",
+    nullable: true,
+  })
+  cryptocurrency: Array<{ id: string; name: string }>;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
