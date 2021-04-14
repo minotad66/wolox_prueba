@@ -1,7 +1,8 @@
 import 'dotenv/config';
 
-const initApp = require('./app');
-const PORT = process.env.PORT || 9000;
+const { initApp } = require('./app');
+
+const PORT = process.env.PORT || 8000;
 
 const app = initApp();
 

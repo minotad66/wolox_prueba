@@ -1,7 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import helmet from 'helmet';
+import * as express from 'express';
+import * as cors from 'cors';
+import * as morgan from 'morgan';
+import * as helmet from 'helmet';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { allRoutes } from './modules/allRoutes';
@@ -18,6 +18,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5000
 
 export const initApp = () => {
   allRoutes(app);
+
   app.use(handlerError);
   return app;
 };

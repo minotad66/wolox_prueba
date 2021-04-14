@@ -1,9 +1,9 @@
+import { validateToken } from '../../../middlewares';
 import * as controller from '../controller';
 
 export const users = (app: any) => {
-  app.get('/users/', controller.findUsers);
-  app.get('/users/:id', controller.findOneUsers);
-  app.post('/users/', controller.saveUsers);
-  app.put('/users/:id', controller.updateUsers);
-  app.delete('/users/:id', controller.removeUsers);
+  app.get('/user_information/', validateToken, controller.userInformation);
+  app.post('/create_users/', controller.saveUsers);
+  app.post('/add_cryptocurrencies/', validateToken, controller.addCryptocurrencies);
+  
 };

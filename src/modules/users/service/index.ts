@@ -1,6 +1,5 @@
 import { validateUser } from '../validation';
-import { IUsers } from '../interface';
-import { Id } from '../../../common/interface';
+import { Icrypto, IUsers } from '../interface';
 import { getRepository } from 'typeorm';
 import { Users } from '../entity';
 import {
@@ -9,24 +8,46 @@ import {
   UniqueViolation,
 } from '../../../utils/errors';
 import { hash } from 'bcrypt';
+import { iPayload } from 'modules/auth/interface';
+import { returnsTheUserPreferredCurrencyValue } from '../../../utils/functions/cryptocurrency';
+import { CryptoCurrency } from '../../cryptocurrency/entity';
 
-export const findUsers = async () => {
+const CoinGecko = require('coingecko-api');
+const CoinGeckoClient = new CoinGecko();
+
+export const userInformation = async (payload: iPayload) => {
   try {
-    return await getRepository(Users).find();
-  } catch (err) {
-    throw err;
-  }
-};
+    const user = await getRepository(Users).findOne(payload.id, { relations: ['crypto'] });
+    if (!user) throw NotFoundException('User not found');
 
-export const findOneUsers = async (params: Id) => {
-  try {
-    const user = await getRepository(Users).findOne(params.id);
+    const responseCryptocurrency = await getRepository(CryptoCurrency).find({
+      where: { idUser: payload.id },
+    });
 
-    if (!user) {
-      throw NotFoundException('User not found');
-    }
+    const arrayCryptoCurrent = await responseCryptocurrency.map(async (item) => {
+      const { data } = await CoinGeckoClient.coins.fetch(item.id, {
+        tickers: false,
+        market_data: true,
+        community_data: false,
+        developer_data: false,
+        localization: true,
+        sparkline: false,
+      });
 
-    return user;
+      return {
+        id: data.id,
+        symbol: data.symbol,
+        name: data.name,
+        description: data.description.es,
+        image: data.image,
+        price: returnsTheUserPreferredCurrencyValue(data.market_data.current_price, user),
+        last_updated: data.last_updated,
+      };
+    });
+
+    const cryptocurrency = await Promise.all(arrayCryptoCurrent);
+
+    return { ...user, cryptocurrency };
   } catch (err) {
     throw err;
   }
@@ -44,42 +65,31 @@ export const saveUsers = async (body: IUsers) => {
       throw InternalServerErrorException('Problem to create a user. Try again.');
     }
 
+    delete userSaved.password;
+
     return userSaved;
   } catch (err) {
-    if (err.code === '23505') {
-      throw UniqueViolation();
+    if (err.code === '23505' || '23502') {
+      throw UniqueViolation(err.name);
     }
     throw err;
   }
 };
 
-export const updateUsers = async (body: IUsers, params: Id) => {
+export const addCryptocurrencies = async (data: Icrypto[], payload: iPayload) => {
   try {
-    const user: IUsers = validateUser(body);
-    await getRepository(Users).update(params.id, user);
-    const updatedUser = await getRepository(Users).findOne(params.id);
+    const response = await data.map(async (item) => {
+      const crypto = await getRepository(CryptoCurrency).findOne({
+        where: { id_crypto: item.id_crypto },
+      });
 
-    if (!updatedUser) {
-      throw NotFoundException('User not found');
-    }
+      return !crypto ? await getRepository(CryptoCurrency).save(item) : crypto;
+    });
 
-    return updatedUser;
-  } catch (err) {
-    throw err;
-  }
-};
+    const user = await getRepository(Users).findOne(payload.id);
+    user.crypto = await Promise.all(response);
 
-export const removeUsers = async (params: Id) => {
-  try {
-    const deleteUser = await getRepository(Users).delete(params.id);
-
-    if (!deleteUser) {
-      throw NotFoundException('User not found');
-    }
-
-    return {
-      message: `The user with the id: ${params.id}, was successfully removed`,
-    };
+    return await getRepository(Users).save(user);
   } catch (err) {
     throw err;
   }

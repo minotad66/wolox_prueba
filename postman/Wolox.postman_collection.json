@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "a2ee3b1c-2d94-48ce-b43e-71f3ac90a62d",
+		"name": "Wolox",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "User Information",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_wolox}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_maguibal}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_wolox}}/users/",
+							"host": [
+								"{{url_wolox}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_wolox}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_maguibal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Armando\",\r\n    \"lastName\": \"Casas\",\r\n    \"username\": \"Armando1\",\r\n    \"password\": \"Prueba123\",\r\n    \"currency\": \"eur\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_wolox}}/create_users/",
+							"host": [
+								"{{url_wolox}}"
+							],
+							"path": [
+								"create_users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add cryptocurrencies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_wolox}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_maguibal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cryptocurrency\": [\r\n        {\r\n            \"id_crypto\": \"bitcoin\",\r\n            \"name\": \"Bitcoin\",\r\n            \"symbol\": \"bit\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_wolox}}/add_cryptocurrencies/",
+							"host": [
+								"{{url_wolox}}"
+							],
+							"path": [
+								"add_cryptocurrencies",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cryptocurrency",
+			"item": [
+				{
+					"name": "Get Cryptocurrency list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_wolox}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_app_countable}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_wolox}}/list_cryptocurrency/?page=1&limit=50&orderBy=id",
+							"host": [
+								"{{url_wolox}}"
+							],
+							"path": [
+								"list_cryptocurrency",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "orderBy",
+									"value": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cryptocurrency Per User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_wolox}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_app_countable}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_wolox}}/cryptocurrency_user/?page=1&limit=25&orderBy=",
+							"host": [
+								"{{url_wolox}}"
+							],
+							"path": [
+								"cryptocurrency_user",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "25"
+								},
+								{
+									"key": "orderBy",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = pm.response.json();\r",
+									"\r",
+									"console.log(res)\r",
+									"\r",
+									"if(res.token) {\r",
+									"    let token = res.token;\r",
+									"    pm.environment.set(\"token_wolox\", token);\r",
+									"}else{\r",
+									"    console.log('no se actualizo el token')\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_maguibal}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Armando1\",\r\n    \"password\": \"Prueba123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_wolox}}/auth/signin/",
+							"host": [
+								"{{url_wolox}}"
+							],
+							"path": [
+								"auth",
+								"signin",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

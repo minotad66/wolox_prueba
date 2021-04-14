@@ -34,20 +34,20 @@ describe('User services, findUsers', () => {
   });
 });
 
-describe('User services, findOneUsers', () => {
-  it('should have a create findOneUsers funtion', () => {
-    expect(typeof service.findOneUsers).toBe('function');
+describe('User services, userInformation', () => {
+  it('should have a create userInformation funtion', () => {
+    expect(typeof service.userInformation).toBe('function');
   });
 
   it('should return json body response', async () => {
     (typeorm as any).getRepository.mockReturnValue({
-      findOne: () => Promise.resolve(mockedDataUser.body),
+      findOne: () => Promise.resolve(mockedDataUser.response),
     });
-    const response = await service.findOneUsers(mockedDataUser.params);
-    expect(response).toStrictEqual(mockedDataUser.body);
+    const response = await service.userInformation(mockedDataUser.user);
+    expect(response).toStrictEqual(mockedDataUser.response);
     expect(
       (typeorm as any).getRepository.mockReturnValue({
-        findOne: () => Promise.resolve(mockedDataUser.body),
+        findOne: () => Promise.resolve(mockedDataUser.response),
       }),
     ).toBeCalled();
   });
@@ -57,7 +57,7 @@ describe('User services, findOneUsers', () => {
       (typeorm as any).getRepository.mockReturnValue({
         findOne: () => Promise.resolve(),
       });
-      await service.findOneUsers(mockedDataUser.params);
+      await service.userInformation(mockedDataUser.user);
     } catch (err) {
       expect(err).toEqual({
         error: 'Not Found',
@@ -96,7 +96,7 @@ describe('User services, saveUsers', () => {
 
       (typeorm as any).getRepository.mockReturnValue({
         create: () => data,
-        save: () => Promise.resolve(),
+        save: () => Promise.resolve({}),
       });
 
       await service.saveUsers(mockedDataUser.body);

@@ -16,9 +16,9 @@ export const BadRequest = (error: string | undefined) => ({
   error: 'Bad request',
 });
 
-export const UniqueViolation = () => ({
+export const UniqueViolation = (error: string | undefined) => ({
   statusCode: 500,
-  message: 'El username ya esta en uso',
+  message: error || 'El username ya esta en uso',
   error: 'Unique violation',
 });
 
@@ -26,4 +26,10 @@ export const UnauthorizedException = (error: string | undefined) => ({
   statusCode: 401,
   message: error || 'Unauthorized',
   error: 'Unauthorized',
+});
+
+export const Forbidden = (error: string | undefined) => ({
+  statusCode: 403,
+  message: error || 'Forbidden',
+  error: 'Forbidden',
 });
