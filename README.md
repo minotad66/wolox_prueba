@@ -1,6 +1,6 @@
-<p align="center">
+<h1 align="center">
   WChallenge - Cryptocurrencies Monitor
-</p>
+</h1>
 
 ## Description
 
