@@ -28,8 +28,6 @@ export const findListCryptocurrency = async (payload: iPayload, pagination: Pagi
 
     return { data: cryptocurrencyList(data, user), qty, pages: Math.ceil(qty / 50) };
   } catch (err) {
-    console.error(err);
-
     throw InternalServerErrorException(err.name);
   }
 };
@@ -41,6 +39,9 @@ export const cryptocurrencyUser = async (payload: iPayload, pagination: Paginati
   try {
     const user = await getRepository(Users).findOne(payload.id);
     if (!user) throw NotFoundException('User not found');
+
+    console.log(user);
+    
 
     let { crypto } = user;
 
@@ -80,8 +81,6 @@ export const cryptocurrencyUser = async (payload: iPayload, pagination: Paginati
 
     return { data: await Promise.all(response), qty, pages: Math.ceil(qty / limit) };
   } catch (err) {
-    console.error(err);
-
     throw InternalServerErrorException(err.name);
   }
 };

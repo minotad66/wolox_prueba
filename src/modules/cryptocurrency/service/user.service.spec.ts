@@ -1,6 +1,7 @@
-/* import * as typeorm from 'typeorm';
+import * as typeorm from 'typeorm';
 import * as service from '../service';
 import { mockedDataUser } from '../test/mockedData';
+import { cryptocurrencyList } from '../../../utils/functions/cryptocurrency';
 
 (typeorm as any).getRepository = jest.fn();
 
@@ -10,10 +11,13 @@ describe('User services, findListCryptocurrency', () => {
   });
 
   it('should return json body response', async () => {
+    const { user, query } = mockedDataUser;
+
     (typeorm as any).getRepository.mockReturnValue({
       find: () => Promise.resolve([mockedDataUser.body]),
     });
-    const response = await service.findListCryptocurrency(mockedDataUser.user);
+
+    const response = await service.findListCryptocurrency(user, query);
     expect(response).toStrictEqual([mockedDataUser.body]);
     expect(
       (typeorm as any).getRepository.mockReturnValue({
@@ -34,17 +38,17 @@ describe('User services, findListCryptocurrency', () => {
   });
 });
 
-
 describe('User services, cryptocurrencyUser', () => {
+  const { user, query } = mockedDataUser;
   it('should have a create cryptocurrencyUser funtion', () => {
     expect(typeof service.cryptocurrencyUser).toBe('function');
   });
 
   it('should return json body response', async () => {
     (typeorm as any).getRepository.mockReturnValue({
-      find: () => Promise.resolve([mockedDataUser.body]),
+      findOne: () => Promise.resolve(mockedDataUser.body),
     });
-    const response = await service.cryptocurrencyUser(mockedDataUser.user);
+    const response = await service.cryptocurrencyUser(user, query);
     expect(response).toStrictEqual([mockedDataUser.body]);
     expect(
       (typeorm as any).getRepository.mockReturnValue({
@@ -63,4 +67,4 @@ describe('User services, cryptocurrencyUser', () => {
       expect(error).toThrow('An error ocurred');
     }
   });
-}); */
+});

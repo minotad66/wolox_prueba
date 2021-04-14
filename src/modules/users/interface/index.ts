@@ -5,3 +5,9 @@ export interface IUsers {
   password: string;
   currency: string;
 }
+
+export interface Icrypto {
+  id_crypto: string;
+  name: string;
+  symbol: string;
+}

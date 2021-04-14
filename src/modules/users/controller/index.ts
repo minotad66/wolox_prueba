@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { iPayload } from 'modules/auth/interface';
-import { Id } from '../../../common/interface';
-import { IUsers } from '../interface';
+import { Icrypto, IUsers } from '../interface';
 import * as services from '../service';
 
 export const userInformation = async (
@@ -27,12 +26,12 @@ export const saveUsers = async (req: { body: IUsers }, res: Response, next: Next
 };
 
 export const addCryptocurrencies = async (
-  req: { body: { cryptocurrency: number[] }; user: iPayload },
+  req: { body: { cryptocurrency: Icrypto[] }; user: iPayload },
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const data: number[] = req.body.cryptocurrency;
+    const data: Icrypto[] = req.body.cryptocurrency;
     const response = await services.addCryptocurrencies(data, req.user);
     return res.status(201).json(response);
   } catch (err) {

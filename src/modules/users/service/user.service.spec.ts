@@ -14,7 +14,7 @@ describe('User services, findUsers', () => {
       find: () => Promise.resolve([mockedDataUser.body]),
     });
     const response = await service.findUsers();
-    expect(response).toStrictEqual(mockedDataUser.body);
+    expect(response).toStrictEqual([mockedDataUser.body]);
     expect(
       (typeorm as any).getRepository.mockReturnValue({
         find: () => Promise.resolve([mockedDataUser.body]),
@@ -96,7 +96,7 @@ describe('User services, saveUsers', () => {
 
       (typeorm as any).getRepository.mockReturnValue({
         create: () => data,
-        save: () => Promise.resolve(),
+        save: () => Promise.resolve({}),
       });
 
       await service.saveUsers(mockedDataUser.body);

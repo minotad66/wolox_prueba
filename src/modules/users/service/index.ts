@@ -1,7 +1,6 @@
 import { validateUser } from '../validation';
-import { IUsers } from '../interface';
-import { Id } from '../../../common/interface';
-import { getConnection, getRepository } from 'typeorm';
+import { Icrypto, IUsers } from '../interface';
+import { getRepository } from 'typeorm';
 import { Users } from '../entity';
 import {
   InternalServerErrorException,
@@ -15,14 +14,6 @@ import { CryptoCurrency } from '../../cryptocurrency/entity';
 
 const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
-
-export const findUsers = async () => {
-  try {
-    return await getRepository(Users).find({ relations: ['crypto'] });
-  } catch (err) {
-    throw err;
-  }
-};
 
 export const userInformation = async (payload: iPayload) => {
   try {
@@ -85,49 +76,14 @@ export const saveUsers = async (body: IUsers) => {
   }
 };
 
-export const updateUsers = async (body: IUsers, params: Id) => {
-  try {
-    const { password, ...user }: IUsers = validateUser(body);
-    const passwordHash = await hash(password, 10);
-
-    await getRepository(Users).update(params.id, { ...user, password: passwordHash });
-    const updatedUser = await getRepository(Users).findOne(params.id);
-
-    if (!updatedUser) {
-      throw NotFoundException('User not found');
-    }
-
-    return updatedUser;
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const removeUsers = async (params: Id) => {
-  try {
-    const deleteUser = await getRepository(Users).delete(params.id);
-
-    if (!deleteUser) {
-      throw NotFoundException('User not found');
-    }
-
-    return {
-      message: `The user with the id: ${params.id}, was successfully removed`,
-    };
-  } catch (err) {
-    throw err;
-  }
-};
-export const addCryptocurrencies = async (data: any, payload: iPayload) => {
+export const addCryptocurrencies = async (data: Icrypto[], payload: iPayload) => {
   try {
     const response = await data.map(async (item) => {
-      const crypto = await getRepository(CryptoCurrency).findOne(item.id);
+      const crypto = await getRepository(CryptoCurrency).findOne({
+        where: { id_crypto: item.id_crypto },
+      });
 
-      if (!crypto) {
-        return await getRepository(CryptoCurrency).save(item);
-      } else {
-        return crypto;
-      }
+      return !crypto ? await getRepository(CryptoCurrency).save(item) : crypto;
     });
 
     const user = await getRepository(Users).findOne(payload.id);
@@ -135,18 +91,6 @@ export const addCryptocurrencies = async (data: any, payload: iPayload) => {
 
     return await getRepository(Users).save(user);
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 };
-/* user.crypto = [
-      {
-        id_crypto: 'bitcoin',
-        symbol: 'bit',
-        priceArgentine: 1231,
-        priceDollars: 453,
-        priceEuros: 43256,
-        name: 'Bitcoin',
-        image: ['mwoowmwomcomwmcowicm'],
-        lastUpdateDate: new Date('2021-04-13'),
-      }, 
-    ];*/

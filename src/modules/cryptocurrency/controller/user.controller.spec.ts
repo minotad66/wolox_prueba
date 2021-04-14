@@ -1,4 +1,4 @@
-/* import * as controllers from './index';
+import * as controllers from './index';
 import * as service from '../service';
 import * as httpMocks from 'node-mocks-http';
 import { mockedDataUser } from '../test/mockedData';
@@ -64,4 +64,3 @@ describe('cryptocurrencyUser controllers', () => {
     expect(next).toBeCalledWith(new Error('An error ocurred'));
   });
 });
- */
