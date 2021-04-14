@@ -5,7 +5,7 @@
 ## Description
 
 
-<h2>Repository test wolox.</h2>
+<h3>Repository test wolox.</h3>
 <h3>The application is made with typescript</h3>
 
 
@@ -54,15 +54,15 @@ npm run test:watch
 npm run test:watch
 ```
 
-<h3>This application has docker</h3>
+## This application has docker
 <h4> To run the database locally with docker compose you need to have docker installed. </h4>
 
-## Docker compose
+<h4> run docker compose</h4>
 
 ```bash
 docker-compose up
 ```
-## Docker 
+<h4>run docker </h4>
 
 ```bash
 docker run [name]
