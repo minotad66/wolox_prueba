@@ -18,8 +18,19 @@ npm install
 
 ## Running
 
+<h4> run dev </h4>
 ```bash
 npm run start:dev
+```
+
+<h4> run poduction </h4>
+```bash
+npm run start
+```
+
+<h4> run build </h4>
+```bash
+npm run build
 ```
 
 ## Testing
@@ -28,7 +39,18 @@ npm run start:dev
 npm run test
 ```
 
-This application has docker
+<h4> Testing watch </h4>
+```bash
+npm run test:watch
+```
+  
+<h4> Testing coverage  </h4>
+```bash
+npm run test:watch
+```
+
+<h3>This application has docker</h3>
+<h4> To run the database locally with docker compose you need to have docker installed. </h4>
 ## Docker compose
 
 ```bash
