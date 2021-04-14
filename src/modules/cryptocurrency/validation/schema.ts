@@ -1,8 +1,9 @@
 import * as Joi from 'joi';
 
-export const criptoCurrecy = Joi.array().items(
-  Joi.object({
-    id: Joi.string().max(80).required().label('Ingrese el id de la criptomoneda'),
-    name: Joi.string().max(256).required().label('Ingrese el nombre de la criptomoneda'),
-  }),
-);
+export const criptoCurrecy = Joi.array().items(Joi.number().required());
+
+export const pagination = Joi.object({
+  orderBy: Joi.string().max(100).allow(''),
+  page: Joi.number().min(0).required().label('Ingrese el número de página'),
+  limit: Joi.number().min(1).max(25).optional().label('Ingrese el limite (nin:1, max:50)'),
+});

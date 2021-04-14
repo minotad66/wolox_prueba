@@ -1,5 +1,5 @@
 import { BadRequest } from '../../../utils/errors';
-import { criptoCurrecy } from './schema';
+import { criptoCurrecy, pagination } from './schema';
 
 const responseValidation = (value: any) => {
   if (value['error']) {
@@ -10,6 +10,12 @@ const responseValidation = (value: any) => {
 
 export const validateCriptoCurrecy = (data: object) => {
   const value = criptoCurrecy.validate(data);
+  const response = responseValidation(value);
+  return response;
+};
+
+export const validatePagination = (data: object) => {
+  const value = pagination.validate(data);
   const response = responseValidation(value);
   return response;
 };

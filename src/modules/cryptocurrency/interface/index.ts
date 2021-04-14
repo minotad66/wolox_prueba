@@ -16,7 +16,8 @@ export interface IResposnseCryptoCurrentList {
   last_updated: Date;
 }
 
-export interface ICryptoCurrency {
-  id: string;
-  name: string;
+export interface Pagination {
+  orderBy: string;
+  page: number;
+  limit?: number;
 }

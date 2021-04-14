@@ -1,7 +1,7 @@
 import { validateUser } from '../validation';
 import { IUsers } from '../interface';
 import { Id } from '../../../common/interface';
-import { getRepository } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
 import { Users } from '../entity';
 import {
   InternalServerErrorException,
@@ -11,45 +11,29 @@ import {
 import { hash } from 'bcrypt';
 import { iPayload } from 'modules/auth/interface';
 import { returnsTheUserPreferredCurrencyValue } from '../../../utils/functions/cryptocurrency';
+import { CryptoCurrency } from '../../cryptocurrency/entity';
 
 const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
 
 export const findUsers = async () => {
   try {
-    return await getRepository(Users).find();
+    return await getRepository(Users).find({ relations: ['crypto'] });
   } catch (err) {
     throw err;
   }
 };
 
-/* const obtainInformationAboutCryptocurrencies = async (
-  criptocurrency: ICryptoCurrent[],
-  currency: string,
-) => {
-  const arrayCriptocurrency = [];
-
-  for (const item of criptocurrency) {
-    const response = await CoinGeckoClient.simple.price({
-      ids: item.id,
-      vs_currency: currency,
-      order: 'market_cap_desc',
-      sparkline: false,
-      price_change_percentage: '1h',
-    });
-    //await CoinGeckoClient.coins.list(item.id);
-    arrayCriptocurrency.push(response);
-  }
-
-  return await Promise.all(arrayCriptocurrency);
-}; */
-
 export const userInformation = async (payload: iPayload) => {
   try {
-    const user = await getRepository(Users).findOne(payload.id);
+    const user = await getRepository(Users).findOne(payload.id, { relations: ['crypto'] });
     if (!user) throw NotFoundException('User not found');
 
-    const response = await user.cryptocurrency.map(async (item) => {
+    const responseCryptocurrency = await getRepository(CryptoCurrency).find({
+      where: { idUser: payload.id },
+    });
+
+    const arrayCryptoCurrent = await responseCryptocurrency.map(async (item) => {
       const { data } = await CoinGeckoClient.coins.fetch(item.id, {
         tickers: false,
         market_data: true,
@@ -70,9 +54,9 @@ export const userInformation = async (payload: iPayload) => {
       };
     });
 
-    user.cryptocurrency = await Promise.all(response);
+    const cryptocurrency = await Promise.all(arrayCryptoCurrent);
 
-    return user;
+    return { ...user, cryptocurrency };
   } catch (err) {
     throw err;
   }
@@ -134,8 +118,35 @@ export const removeUsers = async (params: Id) => {
     throw err;
   }
 };
+export const addCryptocurrencies = async (data: any, payload: iPayload) => {
+  try {
+    const response = await data.map(async (item) => {
+      const crypto = await getRepository(CryptoCurrency).findOne(item.id);
 
-/* let data = await CoinGeckoClient.simple.price({
-    ids: ['bitcoin', 'ethereum'],
-    vs_currencies: ['eur', 'usd'],
-}); */
+      if (!crypto) {
+        return await getRepository(CryptoCurrency).save(item);
+      } else {
+        return crypto;
+      }
+    });
+
+    const user = await getRepository(Users).findOne(payload.id);
+    user.crypto = await Promise.all(response);
+
+    return await getRepository(Users).save(user);
+  } catch (err) {
+    console.error(err);
+  }
+};
+/* user.crypto = [
+      {
+        id_crypto: 'bitcoin',
+        symbol: 'bit',
+        priceArgentine: 1231,
+        priceDollars: 453,
+        priceEuros: 43256,
+        name: 'Bitcoin',
+        image: ['mwoowmwomcomwmcowicm'],
+        lastUpdateDate: new Date('2021-04-13'),
+      }, 
+    ];*/

@@ -1,4 +1,4 @@
-/* import * as typeorm from 'typeorm';
+import * as typeorm from 'typeorm';
 import * as service from '.';
 import * as jwt from 'jsonwebtoken';
 import { mockedDataUser } from '../test/mockedData';
@@ -67,4 +67,3 @@ describe('User services, signIn', () => {
     }
   });
 });
- */

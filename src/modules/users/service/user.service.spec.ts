@@ -1,4 +1,4 @@
-/* import * as typeorm from 'typeorm';
+import * as typeorm from 'typeorm';
 import * as service from '../service';
 import { mockedDataUser } from '../test/mockedData';
 
@@ -14,7 +14,7 @@ describe('User services, findUsers', () => {
       find: () => Promise.resolve([mockedDataUser.body]),
     });
     const response = await service.findUsers();
-    expect(response).toStrictEqual([mockedDataUser.body]);
+    expect(response).toStrictEqual(mockedDataUser.body);
     expect(
       (typeorm as any).getRepository.mockReturnValue({
         find: () => Promise.resolve([mockedDataUser.body]),
@@ -41,13 +41,13 @@ describe('User services, userInformation', () => {
 
   it('should return json body response', async () => {
     (typeorm as any).getRepository.mockReturnValue({
-      findOne: () => Promise.resolve(mockedDataUser.body),
+      findOne: () => Promise.resolve(mockedDataUser.response),
     });
     const response = await service.userInformation(mockedDataUser.user);
-    expect(response).toStrictEqual(mockedDataUser.body);
+    expect(response).toStrictEqual(mockedDataUser.response);
     expect(
       (typeorm as any).getRepository.mockReturnValue({
-        findOne: () => Promise.resolve(mockedDataUser.body),
+        findOne: () => Promise.resolve(mockedDataUser.response),
       }),
     ).toBeCalled();
   });
@@ -206,4 +206,3 @@ describe('User services, removeUsers', () => {
     }
   });
 });
- */

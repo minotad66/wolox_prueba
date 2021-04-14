@@ -1,30 +1,29 @@
 import { Request, Response, NextFunction } from 'express';
 import { iPayload } from '../../auth/interface';
-import { ICryptoCurrency } from '../interface';
+import { Pagination } from '../interface';
 import * as services from '../service';
 
 export const findListCryptocurrency = async (
-  req: { user: iPayload },
+  req: { user: iPayload; query: Pagination },
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const response = await services.findListCryptocurrency(req.user);
+    const response = await services.findListCryptocurrency(req.user, req.query);
     return res.status(200).json(response);
   } catch (err) {
     next(err);
   }
 };
 
-export const saveCryptocurrency = async (
-  req: { body: { cryptocurrency: ICryptoCurrency[]; }; user: iPayload; },
+export const cryptocurrencyUser = async (
+  req: { user: iPayload; query: Pagination },
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const data:ICryptoCurrency[] = req.body.cryptocurrency;
-    const response = await services.saveCryptocurrency(data, req.user);
-    return res.status(201).json(response);
+    const response = await services.cryptocurrencyUser(req.user, req.query);
+    return res.status(200).json(response);
   } catch (err) {
     next(err);
   }

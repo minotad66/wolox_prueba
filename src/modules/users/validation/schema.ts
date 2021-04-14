@@ -10,3 +10,5 @@ export const user = Joi.object({
     .label('La contraseña debe tener por lo menos 8 caracteres'),
   currency: Joi.string().max(256).required().label('Ingrese su moneda preferida'),
 });
+
+

@@ -6,13 +6,20 @@ export const returnsTheUserPreferredCurrencyValue = (
   user: Users | undefined,
 ) => {
   const price = [];
+
   for (const currency in current_price) {
-    if (currency === user?.currency) {
-      price.push(current_price[currency]);
+    if (currency === 'ars') {
+      price.push({ ars: current_price[currency] });
+    }
+    if (currency === 'usd') {
+      price.push({ usd: current_price[currency] });
+    }
+    if (currency === 'eur') {
+      price.push({ eur: current_price[currency] });
     }
   }
 
-  return price[0];
+  return price;
 };
 
 export const cryptocurrencyList = (data: IResposnseCryptoCurrentList[], user: Users | undefined) =>

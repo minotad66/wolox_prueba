@@ -1,4 +1,4 @@
-/* import * as controllers from './index';
+import * as controllers from './index';
 import * as service from '../service';
 import * as httpMocks from 'node-mocks-http';
 import { mockedDataUser } from '../test/mockedData';
@@ -162,4 +162,4 @@ describe('removeUsers controllers', () => {
     expect(next).toBeCalledWith(errorMessage);
   });
 });
- */
+

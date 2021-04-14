@@ -33,4 +33,34 @@ describe('User services, findListCryptocurrency', () => {
     }
   });
 });
- */
+
+
+describe('User services, cryptocurrencyUser', () => {
+  it('should have a create cryptocurrencyUser funtion', () => {
+    expect(typeof service.cryptocurrencyUser).toBe('function');
+  });
+
+  it('should return json body response', async () => {
+    (typeorm as any).getRepository.mockReturnValue({
+      find: () => Promise.resolve([mockedDataUser.body]),
+    });
+    const response = await service.cryptocurrencyUser(mockedDataUser.user);
+    expect(response).toStrictEqual([mockedDataUser.body]);
+    expect(
+      (typeorm as any).getRepository.mockReturnValue({
+        find: () => Promise.resolve([mockedDataUser.body]),
+      }),
+    ).toBeCalled();
+  });
+
+  it('should handle errors', async () => {
+    try {
+      const error = 'An error ocurred';
+      (typeorm as any).getRepository.mockReturnValue({
+        find: () => Promise.reject(error),
+      });
+    } catch (error) {
+      expect(error).toThrow('An error ocurred');
+    }
+  });
+}); */

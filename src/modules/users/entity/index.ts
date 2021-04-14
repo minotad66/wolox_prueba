@@ -1,43 +1,43 @@
+import { CryptoCurrency } from '../../cryptocurrency/entity';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('users')
-export class Users extends BaseEntity {
+export class Users {
   @PrimaryGeneratedColumn('increment', { name: 'user_id' })
-  id: number;
+  public id: number;
 
   @Column({ type: 'varchar', length: 128 })
-  name: string;
+  public name: string;
 
   @Column({ type: 'varchar', length: 128 })
-  lastName: string;
+  public lastName: string;
 
   @Column({ type: 'varchar', length: 128, unique: true })
-  username: string;
+  public username: string;
 
   @Column({ type: 'varchar', length: 128, select: false })
-  password: string;
+  public password: string;
 
   @Column({ type: 'varchar', length: 128 })
-  currency: string;
+  public currency: string;
 
-  @Column({
-    type: 'jsonb',
-    array: false,
-    default: () => "'[]'",
-    nullable: true,
+  @ManyToMany((type) => CryptoCurrency, (cryptocurrency) => cryptocurrency.id, {
+    eager: true,
   })
-  cryptocurrency: Array<{ id: string; name: string }>;
+  @JoinTable()
+  crypto: CryptoCurrency[];
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
-  createdAt: Date;
+  public createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
-  updatedAt: Date;
+  public updatedAt: Date;
 }
