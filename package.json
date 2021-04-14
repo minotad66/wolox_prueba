@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main",
+    "start": "tsc & node dist/main",
     "start:dev": "ts-node-dev src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
