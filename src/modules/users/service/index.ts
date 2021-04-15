@@ -20,12 +20,8 @@ export const userInformation = async (payload: iPayload) => {
     const user = await getRepository(Users).findOne(payload.id, { relations: ['crypto'] });
     if (!user) throw NotFoundException('User not found');
 
-    const responseCryptocurrency = await getRepository(CryptoCurrency).find({
-      where: { idUser: payload.id },
-    });
-
-    const arrayCryptoCurrent = await responseCryptocurrency.map(async (item) => {
-      const { data } = await CoinGeckoClient.coins.fetch(item.id, {
+    const arrayCryptoCurrent = await user.crypto.map(async (item) => {
+      const { data } = await CoinGeckoClient.coins.fetch(item.id_crypto, {
         tickers: false,
         market_data: true,
         community_data: false,
@@ -35,7 +31,7 @@ export const userInformation = async (payload: iPayload) => {
       });
 
       return {
-        id: data.id,
+        id: data.id_crypto,
         symbol: data.symbol,
         name: data.name,
         description: data.description.es,
